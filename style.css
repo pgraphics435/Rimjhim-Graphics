@@ -1089,6 +1089,7 @@ transition:.3s;
         height: 50px;
     }
 }
+<<<<<<< HEAD
 
 
 /* ===== Premium + modern homepage refresh (Step 2) ===== */
@@ -1415,3 +1416,5 @@ nav ul li a.nav-order:hover{color:#000;transform:translateY(-2px)}
         right: 15px;
     }
 }
+=======
+>>>>>>> 249c0196a07b003240b51d5db3baaad04ca5f64d
