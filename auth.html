@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Rimjhim Graphics - Login</title>
+
+<style>
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: linear-gradient(rgba(0,0,0,0.45), rgba(0,0,0,0.65)),
+    url("images/login-bg.jpg") center center / cover no-repeat fixed;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+}
+
+.container {
+    width: 80%;
+    max-width: 420px;
+    background: rgba(15, 15, 15, 0.45);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    padding: 12px;
+    border: 1px solid #c99b38;
+    border-radius: 15px;
+    box-shadow: 0 0 25px #c99b3825;
+}
+
+h2 {
+    text-align: center;
+    color: #d9ae50;
+}
+
+.subtitle {
+    text-align: center;
+    color: #aaa;
+    margin-bottom: 25px;
+}
+
+input {
+    width: 100%;
+    padding: 14px;
+    margin: 10px 0;
+    background: #252525;
+    border: 1px solid #444;
+    border-radius: 7px;
+    color: white;
+}
+
+button {
+    width: 100%;
+    padding: 14px;
+    margin-top: 12px;
+    background: #d5a638;
+    border: none;
+    border-radius: 7px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #f0c65c;
+}
+
+.switch {
+    text-align: center;
+    margin-top: 20px;
+    color: #ccc;
+}
+
+.switch a {
+    color: #e6b94f;
+    cursor: pointer;
+}
+
+#message {
+    text-align: center;
+    margin-top: 15px;
+    font-size: 14px;
+}
+
+.hidden {
+    display: none;
+}
+/* ===== MOBILE LOGIN RESPONSIVE ===== */
+
+@media (max-width: 480px) {
+
+    body {
+        padding: 15px;
+        align-items: center;
+    }
+
+    .container {
+        width: 100%;
+        max-width: 100%;
+        padding: 25px 18px;
+        border-radius: 12px;
+    }
+
+    h2 {
+        font-size: 23px;
+    }
+
+    .subtitle {
+        font-size: 13px;
+        margin-bottom: 20px;
+    }
+
+    input {
+        padding: 13px;
+        font-size: 15px;
+    }
+
+    button {
+        padding: 13px;
+        font-size: 15px;
+    }
+
+    .switch {
+        font-size: 13px;
+        line-height: 1.6;
+    }
+
+    #message {
+        font-size: 13px;
+    }
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h2 style="color:rgb(251, 251, 4); text-align:center; line-height:1.5;">
+    RIMJHIM
+    GRAPHICS & ADVERTISEMENT
+</h2>
+
+<p style="color:white; text-align:center; font-size:15px;">
+    Graphics • Printing • Advertising
+</p>
+    <p class="subtitle">Welcome to Our Creative World</p>
+
+    <div id="signupBox">
+        <h3>Create Account</h3>
+
+        <input id="name" type="text"
+        placeholder="Full Name">
+
+        <input id="signupEmail" type="email"
+        placeholder="Email Address">
+
+        <input id="signupPassword" type="password"
+        placeholder="Password (Minimum 6 characters)">
+
+        <button id="signupBtn">CREATE ACCOUNT</button>
+
+        <p class="switch">
+        Already registered?
+        <a id="showLogin">Login</a>
+        </p>
+    </div>
+
+    <div id="loginBox" class="hidden">
+        <h3>Customer Login</h3>
+
+        <input id="loginEmail" type="email"
+        placeholder="Email Address">
+
+        <input id="loginPassword" type="password"
+        placeholder="Password">
+
+        <button id="loginBtn">LOGIN</button>
+
+        <p class="switch">
+        <a id="forgotPassword">Forgot Password?</a>
+        </p>
+
+        <p class="switch">
+        New Customer?
+        <a id="showSignup">Create Account</a>
+        </p>
+    </div>
+
+    <p id="message"></p>
+
+</div>
+
+<script type="module">
+
+import { auth, db } from "./firebase-config.js";
+
+import {
+    createUserWithEmailAndPassword,
+    signInWithEmailAndPassword,
+    sendPasswordResetEmail,
+    updateProfile
+} from "https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js";
+
+import {
+    doc,
+    setDoc,
+    serverTimestamp
+} from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
+
+
+const signupBox = document.getElementById("signupBox");
+const loginBox = document.getElementById("loginBox");
+const message = document.getElementById("message");
+
+document.getElementById("showLogin").onclick = () => {
+    signupBox.classList.add("hidden");
+    loginBox.classList.remove("hidden");
+    message.textContent = "";
+};
+
+document.getElementById("showSignup").onclick = () => {
+    loginBox.classList.add("hidden");
+    signupBox.classList.remove("hidden");
+    message.textContent = "";
+};
+
+
+document.getElementById("signupBtn").onclick = async () => {
+
+    const name = document.getElementById("name").value.trim();
+    const email = document.getElementById("signupEmail").value.trim();
+    const password = document.getElementById("signupPassword").value;
+
+    if (!name || !email || !password) {
+        message.textContent = "Please fill all fields.";
+        return;
+    }
+
+    try {
+        message.textContent = "Creating account...";
+
+        const result = await createUserWithEmailAndPassword(
+            auth, email, password
+        );
+
+        await updateProfile(result.user, {
+            displayName: name
+        });
+
+        await setDoc(doc(db, "users", result.user.uid), {
+            name: name,
+            email: email,
+            role: "customer",
+            createdAt: serverTimestamp()
+        });
+
+        message.textContent = "Account created successfully!";
+
+    } catch (error) {
+        message.textContent = error.message;
+    }
+};
+
+
+document.getElementById("loginBtn").onclick = async () => {
+
+    const email = document.getElementById("loginEmail").value.trim();
+    const password = document.getElementById("loginPassword").value;
+
+    try {
+        message.textContent = "Logging in...";
+
+const userCredential = await signInWithEmailAndPassword(auth, email, password);
+
+message.textContent = "Login successful!";
+
+const ADMIN_UID = "13qGoVD715U1j85y3ukwUNIhNF52";
+
+if (userCredential.user.uid === ADMIN_UID) {
+    window.location.href = "admin.html";
+} else {
+    window.location.href = "dashboard.html";
+}
+
+    } catch (error) {
+        message.textContent = error.message;
+    }
+};
+
+
+document.getElementById("forgotPassword").onclick = async () => {
+
+    const email = document.getElementById("loginEmail").value.trim();
+
+    if (!email) {
+        message.textContent = "Please enter your email first.";
+        return;
+    }
+
+    try {
+        await sendPasswordResetEmail(auth, email);
+        message.textContent = "Password reset email sent!";
+    } catch (error) {
+        message.textContent = error.message;
+    }
+};
+
+</script>
+
+</body>
+</html>

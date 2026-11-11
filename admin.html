@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Panel | Rimjhim Graphics</title>
+
+<style>
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+}
+
+body {
+  background: #0b0b0b;
+  color: white;
+}
+
+header {
+  background: #151515;
+  padding: 22px;
+  border-bottom: 2px solid #d4af37;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+header h2 {
+  color: #d4af37;
+}
+
+button, select {
+  padding: 10px 15px;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+}
+
+button {
+  background: #d4af37;
+  color: black;
+  font-weight: bold;
+}
+
+.container {
+  padding: 30px 5%;
+}
+
+h1 {
+  color: #d4af37;
+  margin-bottom: 20px;
+}
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit,minmax(180px,1fr));
+  gap: 15px;
+  margin-bottom: 30px;
+}
+
+.box {
+  background: #191919;
+  border: 1px solid #80691f;
+  padding: 22px;
+  border-radius: 10px;
+}
+
+.box h3 {
+  color: #d4af37;
+  margin-bottom: 12px;
+}
+
+.box p {
+  font-size: 25px;
+}
+
+.order {
+  background: #191919;
+  border: 1px solid #80691f;
+  padding: 20px;
+  border-radius: 10px;
+  margin-bottom: 15px;
+  overflow-wrap: anywhere;
+}
+
+.order h3 {
+  color: #d4af37;
+  margin-bottom: 12px;
+}
+
+.order p {
+  margin: 8px 0;
+  color: #ddd;
+}
+
+.order select {
+  background: #292929;
+  color: white;
+  border: 1px solid #d4af37;
+  margin-right: 8px;
+  margin-top: 10px;
+}
+
+@media(max-width:600px) {
+  header {
+    padding: 15px;
+  }
+
+  .container {
+    padding: 20px 12px;
+  }
+}
+.search-box {
+  margin: 20px 0;
+}
+
+.search-box input {
+  width: 100%;
+  padding: 14px;
+  border: 1px solid #d4af37;
+  border-radius: 10px;
+  background: #171717;
+  color: #ffffff;
+  font-size: 16px;
+  outline: none;
+  box-sizing: border-box;
+}
+
+.search-box input:focus {
+  border-color: #ffffff;
+  box-shadow: 0 0 8px rgba(212, 175, 55, 0.5);
+}
+
+.search-box input::placeholder {
+  color: #aaaaaa;
+}
+.filter-box {
+  margin: 15px 0;
+}
+
+.filter-box select {
+  width: 100%;
+  padding: 14px;
+  border: 1px solid #d4af37;
+  border-radius: 10px;
+  background: #171717;
+  color: #d4af37;
+  font-size: 16px;
+  outline: none;
+  cursor: pointer;
+}
+
+.filter-box select option {
+  background: #171717;
+  color: white;
+}
+/* ===== ADMIN DASHBOARD MOBILE RESPONSIVE ===== */
+
+@media (max-width: 600px) {
+
+    header {
+        padding: 15px;
+        gap: 10px;
+        flex-wrap: wrap;
+    }
+
+    header h2 {
+        font-size: 19px;
+    }
+
+    header button {
+        padding: 9px 13px;
+        font-size: 13px;
+    }
+
+    .container {
+        padding: 22px 12px;
+    }
+
+    h1 {
+        font-size: 23px;
+        line-height: 1.4;
+    }
+
+    .stats {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px;
+    }
+
+    .box {
+        padding: 17px 12px;
+    }
+
+    .box h3 {
+        font-size: 14px;
+    }
+
+    .box p {
+        font-size: 22px;
+    }
+
+    .search-box {
+        margin: 15px 0;
+    }
+
+    .search-box input {
+        padding: 12px;
+        font-size: 15px;
+    }
+
+    .filter-box select {
+        padding: 12px;
+        font-size: 15px;
+    }
+
+    .order {
+        padding: 16px 12px;
+        margin-bottom: 13px;
+    }
+
+    .order h3 {
+        font-size: 17px;
+    }
+
+    .order p {
+        font-size: 14px;
+        line-height: 1.6;
+    }
+
+    .order select {
+        width: 100%;
+        margin: 10px 0;
+        padding: 12px;
+    }
+
+    .order button {
+        width: 100%;
+        margin-top: 8px;
+        padding: 12px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <h2>RIMJHIM GRAPHICS</h2>
+  <button id="logoutBtn">Logout</button>
+</header>
+
+<div class="container">
+
+  <h1>Admin Dashboard</h1>
+
+  <div class="stats">
+    <div class="box">
+      <h3>Total Orders</h3>
+      <p id="totalOrders">0</p>
+    </div>
+
+    <div class="box">
+      <h3>Pending Orders</h3>
+      <p id="pendingOrders">0</p>
+    </div>
+
+    <div class="box">
+      <h3>Completed Orders</h3>
+      <p id="completedOrders">0</p>
+    </div>
+  </div>
+
+  <h2 style="color:#d4af37;margin-bottom:20px;">
+    All Customer Orders
+  </h2>
+  <div class="search-box">
+  <input
+    type="text"
+    id="orderSearch"
+    placeholder="Search by Customer Name, Mobile or Service..."
+  >
+    </div>
+    <div class="filter-box">
+  <select id="statusFilter">
+    <option value="All">All Orders</option>
+    <option value="Pending">Pending</option>
+    <option value="Processing">Processing</option>
+    <option value="Completed">Completed</option>
+    <option value="Cancelled">Cancelled</option>
+  </select>
+</div>
+  <div id="ordersList">Loading Orders...</div>
+
+</div>
+
+<script type="module">
+
+import { auth, db } from "./firebase-config.js";
+
+import {
+  onAuthStateChanged,
+  signOut
+} from "https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js";
+
+import {
+  collection,
+  getDocs,
+  updateDoc,
+  doc
+} from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
+
+// अपना असली Admin UID यहाँ डालें
+const ADMIN_UID = "13qGoVD715U1j85y3ukwUNIhNF52";
+
+function applyOrderFilters() {
+
+  const searchValue = document.getElementById("orderSearch").value.toLowerCase().trim();
+
+  const selectedStatus = document.getElementById("statusFilter").value;
+
+  const orderCards = document.querySelectorAll("#ordersList .order");
+
+  orderCards.forEach(card => {
+
+    const orderText = card.textContent.toLowerCase();
+    const orderStatus = card.dataset.status;
+
+    const matchesSearch = orderText.includes(searchValue);
+
+    const matchesStatus =
+      selectedStatus === "All" || orderStatus === selectedStatus;
+
+    card.style.display =
+      matchesSearch && matchesStatus ? "" : "none";
+
+  });
+}
+
+document.getElementById("orderSearch").addEventListener("input", applyOrderFilters);
+
+document.getElementById("statusFilter").addEventListener("change", applyOrderFilters);
+onAuthStateChanged(auth, async (user) => {
+
+  if (!user) {
+    window.location.href = "auth.html";
+    return;
+  }
+
+  if (user.uid !== ADMIN_UID) {
+    alert("Access Denied! Admin Only.");
+    await signOut(auth);
+    window.location.href = "auth.html";
+    return;
+  }
+
+  loadAllOrders();
+});
+
+async function loadAllOrders() {
+
+  const ordersList = document.getElementById("ordersList");
+
+  ordersList.textContent = "Loading Orders...";
+
+  try {
+
+    const snapshot = await getDocs(collection(db, "orders"));
+
+    let total = 0;
+    let pending = 0;
+    let completed = 0;
+
+    ordersList.innerHTML = "";
+
+    if (snapshot.empty) {
+      ordersList.textContent = "No Orders Found.";
+      return;
+    }
+
+    const orders = [];
+
+    snapshot.forEach((item) => {
+      orders.push({
+        id: item.id,
+        ...item.data()
+      });
+    });
+
+    orders.sort((a, b) =>
+      (b.createdAt?.toMillis() || 0) -
+      (a.createdAt?.toMillis() || 0)
+    );
+
+    orders.forEach((order) => {
+
+      total++;
+
+      if (order.status === "Pending") pending++;
+      if (order.status === "Completed") completed++;
+
+      const card = document.createElement("div");
+      card.className = "order";
+      card.dataset.status = order.status || "Pending";
+
+      const title = document.createElement("h3");
+      title.textContent = order.service || "Order";
+
+      const customer = document.createElement("p");
+      customer.textContent = "Customer: " + (order.customerName || "");
+
+      const phone = document.createElement("p");
+      phone.textContent = "Mobile: " + (order.phone || "");
+
+      const details = document.createElement("p");
+      details.textContent = "Details: " + (order.description || "");
+
+      const statusText = document.createElement("p");
+      statusText.textContent = "Current Status: " + (order.status || "Pending");
+
+      const select = document.createElement("select");
+
+      ["Pending", "Processing", "Completed", "Cancelled"].forEach(status => {
+        const option = document.createElement("option");
+        option.value = status;
+        option.textContent = status;
+        if (status === order.status) option.selected = true;
+        select.appendChild(option);
+      });
+
+      const updateBtn = document.createElement("button");
+      updateBtn.textContent = "Update Status";
+
+      updateBtn.addEventListener("click", async () => {
+        try {
+          await updateDoc(doc(db, "orders", order.id), {
+            status: select.value
+          });
+
+          alert("Order Status Updated!");
+          loadAllOrders();
+
+        } catch (error) {
+          alert("Update Failed: " + error.message);
+        }
+      });
+      // WhatsApp Notification Button
+const whatsappBtn = document.createElement("button");
+whatsappBtn.textContent = "Send WhatsApp";
+
+whatsappBtn.style.background = "#25D366";
+whatsappBtn.style.color = "#ffffff";
+whatsappBtn.style.padding = "10px 15px";
+whatsappBtn.style.border = "none";
+whatsappBtn.style.borderRadius = "8px";
+whatsappBtn.style.cursor = "pointer";
+whatsappBtn.style.marginTop = "10px";
+
+whatsappBtn.addEventListener("click", () => {
+  let mobile = String(order.phone || "").replace(/\D/g, "");
+
+  if (mobile.length === 10) {
+    mobile = "91" + mobile;
+  }
+
+  if (mobile.length !== 12 || !mobile.startsWith("91")) {
+    alert("Customer mobile number is invalid!");
+    return;
+  }
+
+  const message =
+    `Namaste ${order.customerName || "Customer"}!\n\n` +
+    `Your order has been received at Rimjhim Graphics.\n\n` +
+    `Service: ${order.service || ""}\n` +
+    `Details: ${order.description || ""}\n` +
+    `Current Status: ${order.status || "Pending"}\n\n` +
+    `Thank you for choosing Rimjhim Graphics!`;
+
+  const whatsappURL =
+    "https://wa.me/" + mobile + "?text=" + encodeURIComponent(message);
+
+  window.open(whatsappURL, "_blank");
+});
+     card.append(title, customer, phone, details, statusText, select, updateBtn, whatsappBtn);
+      ordersList.appendChild(card);
+    });
+
+    document.getElementById("totalOrders").textContent = total;
+    document.getElementById("pendingOrders").textContent = pending;
+    document.getElementById("completedOrders").textContent = completed;
+
+  } catch (error) {
+    console.error(error);
+    ordersList.textContent = "Error: " + error.message;
+  }
+}
+
+document.getElementById("logoutBtn").addEventListener("click", async () => {
+  await signOut(auth);
+  window.location.href = "auth.html";
+});
+
+</script>
+
+</body>
+</html>
