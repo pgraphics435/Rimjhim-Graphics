@@ -6,15 +6,11 @@
 // ===============================
 // Mobile Menu Toggle
 // ===============================
-<<<<<<< HEAD
 import { auth, db } from "./firebase-config.js";
-=======
->>>>>>> 249c0196a07b003240b51d5db3baaad04ca5f64d
 
 const menuBtn = document.querySelector(".menu-btn");
 const nav = document.querySelector("nav");
 
-<<<<<<< HEAD
 if (menuBtn && nav) {
     menuBtn.setAttribute("aria-label", "Toggle navigation menu");
     menuBtn.setAttribute("aria-expanded", "false");
@@ -30,21 +26,6 @@ if (menuBtn && nav) {
         menuBtn.innerHTML = '<i class="fas fa-bars"></i>';
     }));
 }
-=======
-menuBtn.addEventListener("click", () => {
-
-    if (nav.style.display === "block") {
-
-        nav.style.display = "none";
-
-    } else {
-
-        nav.style.display = "block";
-
-    }
-
-});
->>>>>>> 249c0196a07b003240b51d5db3baaad04ca5f64d
 
 
 // ===============================
@@ -262,7 +243,6 @@ function toggleFolder(id){
 
     }
 
-<<<<<<< HEAD
 }
 
 // ===== STEP 3: Filterable portfolio, image preview & WhatsApp ordering =====
@@ -317,6 +297,3 @@ function toggleFolder(id){
   lightbox.addEventListener('click',e=>{if(e.target===lightbox)closePreview()});
   document.addEventListener('keydown',e=>{if(e.key==='Escape')closePreview()});
 })();
-=======
-}
->>>>>>> 249c0196a07b003240b51d5db3baaad04ca5f64d
