@@ -125,7 +125,7 @@ counters.forEach(counter => {
 // Smooth Scroll
 // ===============================
 
-document.querySelectorAll('nav a').forEach(anchor => {
+document.querySelectorAll('nav a[href^="#"]').forEach(anchor => {
 
     anchor.addEventListener("click", function (e) {
 
