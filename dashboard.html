@@ -457,65 +457,76 @@ async function loadOrders(uid) {
 const status = document.createElement("p");
 status.className = "order-status";
 status.textContent = "Status: " + currentStatus;
-
 if (currentStatus === "Cancelled") {
-  const cancelled = document.createElement("p");
-  cancelled.className = "cancelled-status";
-  cancelled.textContent = "Your order has been cancelled.";
 
-  item.append(title, details, orderDate, status, cancelled);
+    const cancelled = document.createElement("p");
+    cancelled.className = "cancelled-status";
+    cancelled.textContent = "Your order has been cancelled.";
+
+    item.append(title, details, orderDate, status, cancelled);
 
 } else {
 
-  const steps = ["Pending", "Processing", "Completed"];
-  const currentIndex = steps.indexOf(currentStatus);
+    const steps = ["Pending", "Processing", "Completed"];
+    const currentIndex = steps.indexOf(currentStatus);
 
-  const timeline = document.createElement("div");
-  timeline.className = "order-timeline";
+    const timeline = document.createElement("div");
+    timeline.className = "order-timeline";
 
-  steps.forEach((step, index) => {
-    const stepBox = document.createElement("div");
-    stepBox.className = "timeline-step";
+    timeline.style.display = "flex";
+    timeline.style.justifyContent = "space-between";
+    timeline.style.alignItems = "center";
+    timeline.style.width = "100%";
+    timeline.style.gap = "12px";
 
-    if (index <= currentIndex) {
-      stepBox.classList.add("active");
+    steps.forEach((step, index) => {
+
+        const stepBox = document.createElement("div");
+        stepBox.className = "timeline-step";
+
+        if (index <= currentIndex) {
+            stepBox.classList.add("active");
+        }
+
+        const dot = document.createElement("div");
+        dot.className = "timeline-dot";
+
+        const label = document.createElement("span");
+        label.textContent = step;
+
+        stepBox.append(dot, label);
+        timeline.appendChild(stepBox);
+
+    });
+
+    // DOWNLOAD BUTTON
+
+    if (order.designLink) {
+
+        const downloadBtn = document.createElement("a");
+
+        downloadBtn.href = order.designLink;
+        downloadBtn.target = "_blank";
+        downloadBtn.rel = "noopener";
+        downloadBtn.textContent = "DOWNLOAD DESIGN";
+
+        downloadBtn.style.padding = "8px 12px";
+        downloadBtn.style.fontSize = "11px";
+        downloadBtn.style.background = "#d4af37";
+        downloadBtn.style.color = "#000";
+        downloadBtn.style.fontWeight = "bold";
+        downloadBtn.style.borderRadius = "5px";
+        downloadBtn.style.textDecoration = "none";
+        downloadBtn.style.whiteSpace = "nowrap";
+
+        timeline.appendChild(downloadBtn);
     }
 
-    const dot = document.createElement("div");
-    dot.className = "timeline-dot";
+    item.append(title, details, orderDate, status, timeline);
 
-    const label = document.createElement("span");
-    label.textContent = step;
-
-    stepBox.append(dot, label);
-    timeline.appendChild(stepBox);
-  });
-
-  item.append(title, details, orderDate, status, timeline);
 }
 // CUSTOMER DESIGN DOWNLOAD
-if (order.designLink) {
 
-console.log("Customer Design Link:", order.designLink);
-
-  const downloadBtn = document.createElement("a");
-
-  downloadBtn.href = order.designLink;
-  downloadBtn.target = "_blank";
-  downloadBtn.rel = "noopener";
-  downloadBtn.textContent = "DOWNLOAD DESIGN";
-
-  downloadBtn.style.display = "inline-block";
-  downloadBtn.style.padding = "12px 20px";
-  downloadBtn.style.marginTop = "15px";
-  downloadBtn.style.background = "#d4af37";
-  downloadBtn.style.color = "#000";
-  downloadBtn.style.fontWeight = "bold";
-  downloadBtn.style.borderRadius = "6px";
-  downloadBtn.style.textDecoration = "none";
-
-  item.appendChild(downloadBtn);
-}
 ordersList.appendChild(item);
     });
 
