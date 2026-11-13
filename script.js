@@ -227,23 +227,24 @@ document.getElementById("welcomePopup").style.display="none";
 
 }
 
-// new script
+// FOLDER OPEN / CLOSE
 
-function toggleFolder(id){
+window.toggleFolder = function(id) {
 
-    let folder=document.getElementById(id);
+    const folder = document.getElementById(id);
 
-    if(folder.style.display==="block"){
-
-        folder.style.display="none";
-
-    }else{
-
-        folder.style.display="block";
-
+    if (!folder) {
+        console.log("Folder not found:", id);
+        return;
     }
 
-}
+    if (window.getComputedStyle(folder).display === "none") {
+        folder.style.display = "grid";
+    } else {
+        folder.style.display = "none";
+    }
+
+};
 
 // ===== STEP 3: Filterable portfolio, image preview & WhatsApp ordering =====
 (() => {
