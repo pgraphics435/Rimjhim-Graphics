@@ -482,7 +482,59 @@ whatsappBtn.addEventListener("click", () => {
 
   window.open(whatsappURL, "_blank");
 });
-     card.append(title, customer, phone, details, statusText, select, updateBtn, whatsappBtn);
+// DESIGN DOWNLOAD LINK
+const designLabel = document.createElement("p");
+designLabel.textContent = "Customer Design Link:";
+
+const designInput = document.createElement("input");
+designInput.type = "url";
+designInput.placeholder = "Paste Google Drive Design Link";
+designInput.value = order.designLink || "";
+designInput.style.width = "100%";
+designInput.style.padding = "10px";
+designInput.style.margin = "8px 0";
+
+const saveDesignBtn = document.createElement("button");
+saveDesignBtn.textContent = "Save Design Link";
+
+saveDesignBtn.addEventListener("click", async () => {
+  const link = designInput.value.trim();
+
+  if (!link) {
+    alert("Please paste design link!");
+    return;
+  }
+
+  if (!link.startsWith("https://drive.google.com/")) { 
+    alert("Please enter a valid Google Drive link!");
+    return;
+  }
+
+  try {
+    await updateDoc(doc(db, "orders", order.id), {
+      designLink: link
+    });
+
+    alert("Design Link Saved Successfully!");
+    loadAllOrders();
+
+  } catch (error) {
+    alert("Save Failed: " + error.message);
+  }
+});
+     card.append(
+  title,
+  customer,
+  phone,
+  details,
+  statusText,
+  select,
+  updateBtn,
+  designLabel,
+  designInput,
+  saveDesignBtn,
+  whatsappBtn
+);
       ordersList.appendChild(card);
     });
 

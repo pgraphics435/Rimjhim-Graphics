@@ -488,7 +488,29 @@ if (currentStatus === "Cancelled") {
 
   item.append(title, details, orderDate, status, timeline);
 }
+// CUSTOMER DESIGN DOWNLOAD
+if (order.designLink) {
 
+console.log("Customer Design Link:", order.designLink);
+
+  const downloadBtn = document.createElement("a");
+
+  downloadBtn.href = order.designLink;
+  downloadBtn.target = "_blank";
+  downloadBtn.rel = "noopener";
+  downloadBtn.textContent = "DOWNLOAD DESIGN";
+
+  downloadBtn.style.display = "inline-block";
+  downloadBtn.style.padding = "12px 20px";
+  downloadBtn.style.marginTop = "15px";
+  downloadBtn.style.background = "#d4af37";
+  downloadBtn.style.color = "#000";
+  downloadBtn.style.fontWeight = "bold";
+  downloadBtn.style.borderRadius = "6px";
+  downloadBtn.style.textDecoration = "none";
+
+  item.appendChild(downloadBtn);
+}
 ordersList.appendChild(item);
     });
 
