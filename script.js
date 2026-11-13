@@ -273,8 +273,20 @@ window.toggleFolder = function(id) {
           <img src="${item.src}" loading="lazy" alt="${labels[item.category]} ${item.number}">
         </div>
         <div class="portfolio-card-info">
-          <div><h3>${labels[item.category]}</h3><p>Design #${item.number}</p></div>
-          <a class="portfolio-order" href="${makeOrderUrl(item)}" target="_blank" rel="noopener">Order Now</a>
+  <div>
+    <h3>${labels[item.category]}</h3>
+    <p>Design #${item.number}</p>
+  </div>
+
+  <button
+    class="portfolio-order"
+    type="button"
+    onclick="localStorage.setItem('selectedDesign', '${item.src}'); window.location.href='auth.html';">
+    🛒 ORDER THIS DESIGN
+  </button>
+</div>
+#${item.number}</p></div>
+          
         </div>
       </article>`).join('');
   }
@@ -298,3 +310,40 @@ window.toggleFolder = function(id) {
   lightbox.addEventListener('click',e=>{if(e.target===lightbox)closePreview()});
   document.addEventListener('keydown',e=>{if(e.key==='Escape')closePreview()});
 })();
+
+// AUTO ADD ORDER BUTTON TO ALL DESIGNS
+
+document.querySelectorAll(".design-card").forEach(card => {
+
+    if (card.querySelector(".order-design-btn")) return;
+
+    const img = card.querySelector("img");
+
+    if (!img) return;
+
+    const designName = img.getAttribute("src");
+
+    const btn = document.createElement("button");
+
+    btn.className = "order-design-btn";
+    btn.textContent = "🛒 ORDER THIS DESIGN";
+
+    btn.style.display = "block";
+    btn.style.width = "100%";
+    btn.style.padding = "10px";
+    btn.style.marginTop = "8px";
+    btn.style.background = "#d4af37";
+    btn.style.color = "#000";
+    btn.style.fontWeight = "bold";
+    btn.style.border = "none";
+    btn.style.borderRadius = "5px";
+    btn.style.cursor = "pointer";
+
+    btn.onclick = function() {
+        localStorage.setItem("selectedDesign", designName);
+        window.location.href = "auth.html";
+    };
+
+    card.appendChild(btn);
+
+});

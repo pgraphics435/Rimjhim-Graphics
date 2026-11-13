@@ -474,6 +474,7 @@ whatsappBtn.addEventListener("click", () => {
     `Your order has been received at Rimjhim Graphics.\n\n` +
     `Service: ${order.service || ""}\n` +
     `Details: ${order.description || ""}\n` +
+    `Sample Design: ${order.sampleDesign || "No sample selected"}\n` +
     `Current Status: ${order.status || "Pending"}\n\n` +
     `Thank you for choosing Rimjhim Graphics!`;
 
@@ -482,6 +483,27 @@ whatsappBtn.addEventListener("click", () => {
 
   window.open(whatsappURL, "_blank");
 });
+
+// CUSTOMER SELECTED SAMPLE DESIGN PREVIEW
+
+if (order.sampleDesign) {
+
+  const sampleTitle = document.createElement("p");
+  sampleTitle.textContent = "Customer Selected Sample Design:";
+  sampleTitle.style.color = "#d4af37";
+
+  const sampleImage = document.createElement("img");
+  sampleImage.src = order.sampleDesign;
+  sampleImage.alt = "Customer Selected Design";
+  sampleImage.style.width = "100%";
+  sampleImage.style.maxWidth = "250px";
+  sampleImage.style.borderRadius = "10px";
+  sampleImage.style.border = "2px solid #d4af37";
+  sampleImage.style.marginBottom = "15px";
+
+  card.append(sampleTitle, sampleImage);
+}
+
 // DESIGN DOWNLOAD LINK
 const designLabel = document.createElement("p");
 designLabel.textContent = "Customer Design Link:";

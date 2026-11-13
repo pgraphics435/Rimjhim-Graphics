@@ -343,6 +343,27 @@
 
   <form id="orderForm">
 
+    <!-- SELECTED DESIGN PREVIEW -->
+
+<div id="selectedDesignBox" style="display:none; margin-bottom:20px;">
+
+    <h3 style="color:#d4af37;">
+        Your Selected Sample Design
+    </h3>
+
+    <img
+        id="selectedDesignPreview"
+        src=""
+        alt="Selected Design"
+        style="width:100%; max-width:300px; border-radius:10px; border:2px solid #d4af37;"
+    >
+
+    <p style="color:#d4af37;">
+        I want a design similar to this sample.
+    </p>
+
+</div>
+
     <label>Customer Name</label>
     <input type="text" id="orderName" required
       placeholder="Enter your name">
@@ -400,6 +421,22 @@
   getDocs,
   orderBy
 } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
+
+// SHOW SELECTED DESIGN IN ORDER FORM
+
+const selectedDesign = localStorage.getItem("selectedDesign");
+
+if (selectedDesign) {
+
+    const designBox = document.getElementById("selectedDesignBox");
+    const designPreview = document.getElementById("selectedDesignPreview");
+
+    if (designBox && designPreview) {
+        designBox.style.display = "block";
+        designPreview.src = selectedDesign;
+    }
+
+}
 
 async function loadOrders(uid) {
   const ordersList = document.getElementById("ordersList");
@@ -592,10 +629,12 @@ ordersList.appendChild(item);
       phone: document.getElementById("orderPhone").value.trim(),
       service: document.getElementById("orderService").value,
       description: document.getElementById("orderDescription").value.trim(),
+      sampleDesign: localStorage.getItem("selectedDesign") || "",
       status: "Pending",
       createdAt: serverTimestamp()
     });
 
+    localStorage.removeItem("selectedDesign");
     message.textContent = "Your order submitted successfully!";
     message.style.color = "#d4af37";
 
